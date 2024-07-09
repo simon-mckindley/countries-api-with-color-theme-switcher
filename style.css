@@ -46,6 +46,7 @@ body>* {
 
 .home {
     font-size: 14px;
+    min-height: 101vh;
 }
 
 .detail {
@@ -158,6 +159,7 @@ header i {
     row-gap: 0.5rem;
     padding: 1rem;
     min-width: 12rem;
+    min-height: 15rem;
     background-color: var(--elements);
     border-radius: var(--radius);
     box-shadow: 0px 0px 5px 2px var(--shadow-color);
@@ -169,6 +171,10 @@ header i {
 .filters-hidden {
     rotate: 90deg x;
     user-select: none;
+}
+
+.filters-hidden>button {
+    display: none;
 }
 
 .filter-btn {

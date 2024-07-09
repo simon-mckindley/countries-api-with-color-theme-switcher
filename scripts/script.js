@@ -1,5 +1,5 @@
 const modeInput = document.getElementById("mode");
-const filterBtn = document.querySelector(".filter-input");
+const filterToggleBtn = document.querySelector(".filter-input");
 const filterChevron = document.querySelector(".fa-chevron-up");
 const filterOptions = document.querySelector(".filter-options");
 
@@ -135,6 +135,23 @@ function createFilterOptions() {
 
         filterOptions.appendChild(option);
     });
+
+    retrieveSavedFilter();
+}
+
+
+function retrieveSavedFilter() {
+    const savedFilter = sessionStorage.getItem("regionFilter");
+    if (!savedFilter) {
+        return;
+    }
+
+    const filterBtns = filterOptions.querySelectorAll(".filter-btn");
+    const matchingFilterBtn = Array.from(filterBtns).find(btn => btn.id === savedFilter);
+
+    if (matchingFilterBtn) {
+        filterByRegion(matchingFilterBtn);
+    }
 }
 
 
@@ -156,9 +173,17 @@ function closeFilterOptions() {
 }
 
 
+function toggleFilterOptions() {
+    filterOptions.classList.toggle("filters-hidden");
+    filterChevron.classList.toggle("icon-rotate");
+}
+
+
 function filterByRegion(option) {
     closeFilterOptions();
     currentRegion = option.id;
+    sessionStorage.setItem("regionFilter", currentRegion);
+
     filterOptions.querySelectorAll(".filter-btn").forEach((btn) => {
         btn.classList.remove("selected-filter");
     });
@@ -178,6 +203,10 @@ function filterByRegion(option) {
             }, 500);
         }
     });
+
+    setTimeout(() => {
+        filterToggleBtn.querySelector("span").textContent = (currentRegion === "None") ? "Filter by Region" : currentRegion;
+    }, 500);
 }
 
 
@@ -219,15 +248,22 @@ searchInput.addEventListener('input', () => {
 
 
 document.addEventListener("click", function (e) {
-    if (e.target != filterBtn && e.target != filterOptions) {
+    if (e.target != filterToggleBtn && e.target != filterOptions) {
         closeFilterOptions();
     }
 });
 
 
-filterBtn.addEventListener("click", () => {
-    filterOptions.classList.toggle("filters-hidden");
-    filterChevron.classList.toggle("icon-rotate");
+Array.from(filterToggleBtn.children).forEach((el) => {
+    el.addEventListener("click", (event) => {
+        event.stopPropagation();
+        toggleFilterOptions();
+    });
+});
+
+
+filterToggleBtn.addEventListener("click", () => {
+    toggleFilterOptions();
 });
 
 
