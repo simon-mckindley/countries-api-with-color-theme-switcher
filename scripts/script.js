@@ -20,7 +20,8 @@ if (mode) {
 
 async function fetchJsonData() {
     try {
-        const response = await fetch('data.json');
+        // const response = await fetch('data.json');
+        const response = await fetch('https://restcountries.com/v3.1/all');
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -51,15 +52,15 @@ async function assignData() {
 function createCountry(data) {
     const outer = document.createElement("a");
     outer.className = "country-wrapper";
-    outer.href = `/detail.html?country=${data.alpha3Code}`;
+    outer.href = `/detail.html?country=${data.cca3}`;
     outer.setAttribute("data-region", data.region);
-    outer.setAttribute("data-name", data.name.toLowerCase());
+    outer.setAttribute("data-name", data.name.common.toLowerCase());
     outer.setAttribute("aria-hidden", false);
 
     const flag = document.createElement("img");
-    flag.src = data.flag;
+    flag.src = data.flags.svg;
     flag.width = "400";
-    flag.alt = `${data.name} flag`;
+    flag.alt = `${data.name.common} flag`;
 
     const dataWrapper = createCountryData(data);
 
@@ -74,7 +75,7 @@ function createCountryData(data) {
 
     const title = document.createElement("div");
     title.className = "country-title";
-    title.textContent = data.name;
+    title.textContent = data.name.common;
 
     const pop = document.createElement("div");
     pop.textContent = "Population: ";

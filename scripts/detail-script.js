@@ -8,7 +8,7 @@ if (mode) {
 
 const data = JSON.parse(sessionStorage.getItem("country-data"));
 if (data) {
-    console.log("Got data");
+    console.log("DATA");
 } else {
     console.log("NOT LOaDED");
     window.location.replace("/");
@@ -28,24 +28,33 @@ function getQueryParams() {
 
 
 function assignData(params) {
-    const country = data.find((el) => el.alpha3Code === params.country);
+    const country = data.find((el) => el.cca3 === params.country);
 
     if (country) {
-        document.querySelector("title").textContent = country.name;
-        document.getElementById("flag").src = country.flag;
-        document.getElementById("flag").alt = `${country.name} flag`;
-        document.getElementById("detail-title").textContent = country.name;
-        document.getElementById("native").textContent = country.nativeName;
+        document.querySelector("title").textContent = country.name.common;
+
+        document.getElementById("flag").src = country.flags.svg;
+        document.getElementById("flag").alt = `${country.name.common} flag`;
+
+        document.getElementById("detail-title").textContent = country.name.common;
+
+        const nnKeys = Object.keys(country.name.nativeName);
+        document.getElementById("native").textContent = country.name.nativeName[nnKeys[0]].official;
+
         if (country.population) {
             document.getElementById("population").textContent = insertCommas(country.population.toString());
         }
+
         document.getElementById("region").textContent = country.region;
+
         if (country.subregion) {
             document.getElementById("sub-region").textContent = country.subregion;
         }
+
         if (country.capital) {
             document.getElementById("capital").textContent = country.capital;
         }
+
         if (country.area) {
             const areaData = insertCommas(country.area.toString());
             const sup = document.createElement("sup");
@@ -54,13 +63,17 @@ function assignData(params) {
             area.textContent = "";
             area.append(areaData, " km", sup);
         }
-        document.getElementById("domain").textContent = country.topLevelDomain;
+
+        document.getElementById("domain").textContent = country.tld.join(" ");
+
         if (country.currencies) {
-            document.getElementById("currencies").textContent = createList(country.currencies, "name").join(', ');
+            document.getElementById("currencies").textContent = getNameValuesList(country.currencies).join(', ');
         }
+
         if (country.languages) {
-            document.getElementById("languages").textContent = createList(country.languages, "name").join(', ');
+            document.getElementById("languages").textContent = getValuesList(country.languages).join(', ');
         }
+
         if (country.borders) {
             createBorderLinks(country.borders);
         } else {
@@ -77,6 +90,16 @@ function assignData(params) {
 
 function createList(items, index) {
     return items.map(item => item[index]);
+}
+
+function getNameValuesList(obj) {
+    return Object.keys(obj)
+        .map(key => obj[key].name)
+        .filter(name => name !== undefined); // Filter out undefined values
+}
+
+function getValuesList(obj) {
+    return Object.keys(obj).map(key => obj[key]);
 }
 
 
@@ -96,9 +119,9 @@ function createBorderLinks(borderCodes) {
     const wrapper = document.querySelector(".border-link-wrapper");
 
     borderCodes.forEach((code) => {
-        const country = data.find((el) => el.alpha3Code === code);
+        const country = data.find((el) => el.cca3 === code);
         const link = document.createElement("a");
-        link.textContent = country.name;
+        link.textContent = country.name.common;
         link.className = "border-link"
         link.href = `/detail.html?country=${code}`;
 
