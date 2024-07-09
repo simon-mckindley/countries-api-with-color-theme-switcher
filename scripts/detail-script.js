@@ -30,17 +30,36 @@ function assignData(params) {
     const country = data.find((el) => el.alpha3Code === params.country);
 
     if (country) {
+        document.querySelector("title").textContent = country.name;
         document.getElementById("flag").src = country.flag;
         document.getElementById("flag").alt = `${country.name} flag`;
         document.getElementById("detail-title").textContent = country.name;
         document.getElementById("native").textContent = country.nativeName;
-        document.getElementById("population").textContent = insertCommas(country.population.toString());
+        if (country.population) {
+            document.getElementById("population").textContent = insertCommas(country.population.toString());
+        }
         document.getElementById("region").textContent = country.region;
-        document.getElementById("sub-region").textContent = country.subregion;
-        document.getElementById("capital").textContent = country.capital;
+        if (country.subregion) {
+            document.getElementById("sub-region").textContent = country.subregion;
+        }
+        if (country.capital) {
+            document.getElementById("capital").textContent = country.capital;
+        }
+        if (country.area) {
+            const areaData = insertCommas(country.area.toString());
+            const sup = document.createElement("sup");
+            sup.textContent = "2";
+            const area = document.getElementById("area");
+            area.textContent = "";
+            area.append(areaData, " km", sup);
+        }
         document.getElementById("domain").textContent = country.topLevelDomain;
-        document.getElementById("currencies").textContent = createList(country.currencies, "name").join(', ');
-        document.getElementById("languages").textContent = createList(country.languages, "name").join(', ');
+        if (country.currencies) {
+            document.getElementById("currencies").textContent = createList(country.currencies, "name").join(', ');
+        }
+        if (country.languages) {
+            document.getElementById("languages").textContent = createList(country.languages, "name").join(', ');
+        }
         if (country.borders) {
             createBorderLinks(country.borders);
         } else {
@@ -79,7 +98,7 @@ function createBorderLinks(borderCodes) {
         const country = data.find((el) => el.alpha3Code === code);
         const link = document.createElement("a");
         link.textContent = country.name;
-        link.className="border-link"
+        link.className = "border-link"
         link.href = `/detail.html?country=${code}`;
 
         wrapper.appendChild(link);
