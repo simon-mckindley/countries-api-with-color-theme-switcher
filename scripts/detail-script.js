@@ -11,6 +11,7 @@ if (data) {
     console.log("Got data");
 } else {
     console.log("NOT LOaDED");
+    window.location.replace("/");
 }
 
 // Function to get query parameters from the URL
