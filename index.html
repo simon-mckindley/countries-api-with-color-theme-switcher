@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countries</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/5bd9d77fd2.js" crossorigin="anonymous"></script>
+    <script src="scripts/script.js" defer></script>
+</head>
+
+<body class="home dark">
+    <header>
+        <h1>Where in the world?</h1>
+        <div>
+            <input type="checkbox" name="mode" id="mode" checked>
+            <label for="mode">
+                <i class="fa-solid fa-moon"></i>
+                Dark Mode
+            </label>
+        </div>
+    </header>
+
+    <div class="controls">
+        <div class="search-wrapper">
+            <input type="search" name="search" id="search" placeholder="Search for a country...">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+
+        <div class="filter-wrapper">
+            <button type="button" class="filter-input">
+                Filter by Region
+                <i class="fa-solid fa-chevron-up"></i>
+            </button>
+            <div class="filter-options filters-hidden" aria-hidden="true" role="listbox">
+                <button type="button" id="None" class="filter-btn selected-filter" role="option"
+                    onclick="filterByRegion(this)">No filter</button>
+            </div>
+        </div>
+    </div>
+
+    <article class="content-wrapper">
+
+        <!-- Template -->
+        <!-- <a href="newpage.html?country=AFG" class="country-wrapper">
+            <img width="400" src="https://flagcdn.com/af.svg" alt="">
+            <div class="country-data">
+                <div class="country-title">Afghanistan</div>
+                <div>Population: <span class="data">40218234</span></div>
+                <div>Region: <span class="data">Asia</span></div>
+                <div>Capital: <span class="data">Kabul</span></div>
+            </div>
+        </a> -->
+
+    </article>
+
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/5bd9d77fd2.js" crossorigin="anonymous"></script>
+    <script src="scripts/detail-script.js" defer></script>
+</head>
+
+<body class="detail dark">
+    <header>
+        <h1>Where in the world?</h1>
+        <div>
+            <input type="checkbox" name="mode" id="mode" checked>
+            <label for="mode">
+                <i class="fa-solid fa-moon"></i>
+                Dark Mode
+            </label>
+        </div>
+    </header>
+
+    <div class="controls">
+        <a class="back-btn" href="/">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back
+        </a>
+    </div>
+
+    <article class="detail-wrapper">
+        <img width="500" id="flag">
+
+        <div class="detail-data-wrapper">
+            <div id="detail-title">Title</div>
+
+            <div class="detail-data-content">
+                <div>Native Name: <span id="native" class="data"></span></div>
+                <div>Population: <span id="population" class="data"></span></div>
+                <div>Region: <span id="region" class="data"></span></div>
+                <div>Sub Region: <span id="sub-region" class="data"></span></div>
+                <div>Capital: <span id="capital" class="data"></span></div>
+            </div>
+            <div class="detail-data-content">
+                <div>Top Level Domain: <span id="domain" class="data">None</span></div>
+                <div>Currencies: <span id="currencies" class="data">None</span></div>
+                <div>Languages: <span id="languages" class="data">None</span></div>
+            </div>
+
+            <div class="border-countries">
+                <div class="border-label">Border Countries:</div>
+                <div class="border-link-wrapper"></div>
+            </div>
+        </div>
+    </article>
+
+</body>
+
+</html>
