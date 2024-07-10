@@ -9,6 +9,7 @@ const contentWrapper = document.querySelector(".content-wrapper");
 
 let regions = new Set();
 let currentRegion = "None";
+let sortData = { data: "name", direction: "up" };
 
 const mode = sessionStorage.getItem("mode");
 if (mode) {
@@ -33,7 +34,7 @@ async function fetchJsonData() {
 }
 
 async function assignData() {
-    let data = JSON.parse(sessionStorage.getItem("country-data"));
+    data = JSON.parse(sessionStorage.getItem("country-data"));
 
     if (!data) {
         data = await fetchJsonData();
@@ -41,6 +42,7 @@ async function assignData() {
 
     if (data) {
         console.log("DATA");
+        data.sort((a, b) => a.name.common.localeCompare(b.name.common));
         sessionStorage.setItem("country-data", JSON.stringify(data));
         data.forEach((item) => {
             regions.add(item.region);
@@ -229,6 +231,32 @@ function filterByName() {
             }
         }
     });
+}
+
+
+document.getElementById("sort").addEventListener("change", function () {
+    sortData.direction = (this.checked) ? "up" : "down";
+
+    sort();
+})
+
+
+function sort() {
+    console.log(sortData.direction);
+    if (sortData.data = "name") {
+        (sortData.direction === "up") ?
+            data.sort((a, b) => a.name.common.localeCompare(b.name.common)) :
+            data.sort((b, a) => a.name.common.localeCompare(b.name.common));
+    }
+
+    sessionStorage.setItem("country-data", JSON.stringify(data));
+    contentWrapper.innerHTML = "";
+    data.forEach((item) => {
+        const country = createCountry(item);
+        contentWrapper.appendChild(country);
+    });
+
+    retrieveSavedFilter();
 }
 
 

@@ -46,7 +46,7 @@ function assignData(params) {
         document.getElementById("detail-title").textContent = country.name.common;
 
         const nnKeys = Object.keys(country.name.nativeName);
-        document.getElementById("native").textContent = country.name.nativeName[nnKeys[0]].official;
+        document.getElementById("native").textContent = country.name.nativeName[nnKeys[0]].common;
 
         if (country.population) {
             document.getElementById("population").textContent = insertCommas(country.population.toString());

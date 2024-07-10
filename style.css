@@ -123,6 +123,38 @@ header i {
     box-shadow: 0px 0px 5px 2px var(--shadow-color);
 }
 
+.controls-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.sort-wrapper {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.sort-data {
+    padding: 1rem;
+    background-color: var(--elements);
+    min-width: 8rem;
+    border-radius: var(--radius);
+    box-shadow: 0px 0px 5px 2px var(--shadow-color);
+    cursor: pointer;
+}
+
+.controls-inner input[type=checkbox] {
+    display: none;
+}
+
+.controls-inner label {
+    padding: 1rem;
+    background-color: var(--elements);
+    border-radius: var(--radius);
+    box-shadow: 0px 0px 5px 2px var(--shadow-color);
+    cursor: pointer;
+}
+
 .filter-input {
     display: flex;
     align-items: center;
@@ -160,7 +192,7 @@ header i {
     row-gap: 0.5rem;
     padding: 1rem;
     min-width: 12rem;
-    min-height: 15rem;
+    min-height: 14rem;
     background-color: var(--elements);
     border-radius: var(--radius);
     box-shadow: 0px 0px 5px 2px var(--shadow-color);
@@ -371,6 +403,10 @@ header i {
 
     header i {
         margin-right: unset;
+    }
+
+    .controls {
+        margin-top: 1.5rem;
     }
 
     .content-wrapper {

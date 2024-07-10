@@ -30,14 +30,24 @@
             <i class="fa-solid fa-magnifying-glass"></i>
         </div>
 
-        <div class="filter-wrapper">
-            <button type="button" class="filter-input">
-                <span>Filter by Region</span>
-                <i class="fa-solid fa-chevron-up"></i>
-            </button>
-            <div class="filter-options filters-hidden" role="listbox">
-                <button type="button" id="None" class="filter-btn selected-filter" role="option"
-                    onclick="filterByRegion(this)">No filter</button>
+        <div class="controls-inner">
+            <div class="sort-wrapper">
+                <div class="sort-data">Name</div>
+                <input type="checkbox" name="sort" id="sort" checked>
+                <label for="sort">
+                    <i class="fa-solid fa-arrow-down-wide-short"></i>
+                </label>
+            </div>
+
+            <div class="filter-wrapper">
+                <button type="button" class="filter-input">
+                    <span>Filter by Region</span>
+                    <i class="fa-solid fa-chevron-up"></i>
+                </button>
+                <div class="filter-options filters-hidden" role="listbox">
+                    <button type="button" id="None" class="filter-btn selected-filter" role="option"
+                        onclick="filterByRegion(this)">No filter</button>
+                </div>
             </div>
         </div>
     </div>
