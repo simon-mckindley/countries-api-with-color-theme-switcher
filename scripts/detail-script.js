@@ -1,5 +1,7 @@
 const modeInput = document.getElementById("mode");
 
+let areas;
+
 const mode = sessionStorage.getItem("mode");
 if (mode) {
     modeInput.checked = (mode === "dark");
@@ -8,7 +10,7 @@ if (mode) {
 
 const data = JSON.parse(sessionStorage.getItem("country-data"));
 if (data) {
-    console.log("DATA");
+    console.log("data");
 } else {
     console.log("NOT LOaDED");
     window.location.replace("/");
@@ -29,9 +31,14 @@ function getQueryParams() {
 
 function assignData(params) {
     const country = data.find((el) => el.cca3 === params.country);
+    areas = data.map(country => country.area);
 
     if (country) {
         document.querySelector("title").textContent = country.name.common;
+
+        if (country.latlng && country.area) {
+            showMap(country.latlng[0], country.latlng[1], country.area);
+        }
 
         document.getElementById("flag").src = country.flags.svg;
         document.getElementById("flag").alt = `${country.name.common} flag`;
@@ -147,6 +154,34 @@ function changeMode() {
 modeInput.addEventListener("change", () => {
     changeMode();
 });
+
+// Function to calculate zoom level
+function calculateZoomLevel(area) {
+    // Define the min and max zoom levels
+    const minZoom = 4;
+    const maxZoom = 13;
+
+    // Find the min and max area in your dataset
+    const minArea = Math.min(...areas);
+    const maxArea = Math.max(...areas);
+    // Normalize the area using logarithmic scaling
+    const normalizedArea = (Math.log(area) - Math.log(minArea)) / (Math.log(maxArea) - Math.log(minArea));
+    // Scale the normalized value to the desired zoom range
+    const zoomLevel = minZoom + (maxZoom - minZoom) * (1 - normalizedArea); // 1 - normalizedArea to flip the scale
+    return zoomLevel;
+}
+
+
+function showMap(lat, lng, area) {
+    const zoom = calculateZoomLevel(area);
+    console.log(zoom);
+    const map = L.map('map').setView([lat, lng], zoom);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+}
 
 
 const params = getQueryParams();

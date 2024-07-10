@@ -135,6 +135,7 @@ header i {
     border: none;
     border-radius: var(--radius);
     box-shadow: 0px 0px 5px 2px var(--shadow-color);
+    cursor: pointer;
 }
 
 .filter-input:focus {
@@ -323,6 +324,11 @@ header i {
     padding: 0.25rem 1rem;
 }
 
+#map {
+    height: calc(70dvh);
+    margin: 3rem;
+}
+
 
 @media screen and (max-width: 800px) {
     .detail-wrapper {
@@ -370,5 +376,9 @@ header i {
     .content-wrapper {
         --_element-width: calc(100vw - 5rem);
         padding-inline: 2.5rem;
+    }
+
+    #map {
+        margin-inline: 0rem;
     }
 }
