@@ -7,7 +7,6 @@ const searchInput = document.getElementById("search");
 
 const contentWrapper = document.querySelector(".content-wrapper");
 
-let data = [];
 let regions = new Set();
 let currentRegion = "None";
 
@@ -34,7 +33,12 @@ async function fetchJsonData() {
 }
 
 async function assignData() {
-    data = await fetchJsonData();
+    let data = JSON.parse(sessionStorage.getItem("country-data"));
+
+    if (!data) {
+        data = await fetchJsonData();
+    }
+
     if (data) {
         console.log("DATA");
         sessionStorage.setItem("country-data", JSON.stringify(data));
