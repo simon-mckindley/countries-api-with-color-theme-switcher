@@ -127,32 +127,45 @@ header i {
     display: flex;
     align-items: center;
     gap: 1.2rem;
+    flex-wrap: wrap;
 }
 
 .sort-wrapper {
     display: flex;
-    gap: 0.25rem;
+    align-items: center;
 }
 
-.sort-data {
-    padding: 1rem;
-    background-color: var(--elements);
-    min-width: 8rem;
-    border-radius: var(--radius);
-    box-shadow: 0px 0px 5px 2px var(--shadow-color);
-    cursor: pointer;
-}
-
-.controls-inner input[type=checkbox] {
+.controls-inner input {
     display: none;
 }
 
-.controls-inner label {
+.sort-data,
+.sort-label {
     padding: 1rem;
     background-color: var(--elements);
     border-radius: var(--radius);
     box-shadow: 0px 0px 5px 2px var(--shadow-color);
     cursor: pointer;
+}
+
+.sort-data {
+    display: flex;
+    padding: 0;
+}
+
+.sort-data label {
+    padding: 1rem 0.75rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+}
+
+.sort-data input:checked+label {
+    outline: var(--shadow-color) solid 3px;
+    outline-offset: -4px;
+}
+
+.sort-wrapper label[for="sort"] {
+    margin-left: 3px;
 }
 
 .filter-input {

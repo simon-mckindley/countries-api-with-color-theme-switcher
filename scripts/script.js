@@ -1,20 +1,42 @@
 const modeInput = document.getElementById("mode");
+
 const filterToggleBtn = document.querySelector(".filter-input");
 const filterChevron = document.querySelector(".fa-chevron-up");
 const filterOptions = document.querySelector(".filter-options");
+
+const sortDirection = document.getElementById("sort");
+const sortDataInput = document.querySelectorAll("input[name=sort-data");
+const sortLabel = document.querySelector(".sort-label i");
 
 const searchInput = document.getElementById("search");
 
 const contentWrapper = document.querySelector(".content-wrapper");
 
+
 let regions = new Set();
 let currentRegion = "None";
-let sortData = { data: "name", direction: "up" };
+let sortData = { data: "name", direction: "down" };
+
 
 const mode = sessionStorage.getItem("mode");
 if (mode) {
     modeInput.checked = (mode === "dark");
     changeMode();
+}
+
+const savedSort = JSON.parse(sessionStorage.getItem("sor"));
+if (savedSort) {
+    sortData = savedSort;
+
+    sortDataInput.forEach((input) => {
+        if (input.value === sortData.data) {
+            input.checked = true;
+        }
+    });
+
+    (sortData.direction === "up") ?
+        sortDirection.checked = true :
+        sortDirection.checked = false;
 }
 
 
@@ -42,7 +64,6 @@ async function assignData() {
 
     if (data) {
         console.log("DATA");
-        data.sort((a, b) => a.name.common.localeCompare(b.name.common));
         sessionStorage.setItem("country-data", JSON.stringify(data));
         data.forEach((item) => {
             regions.add(item.region);
@@ -51,6 +72,7 @@ async function assignData() {
         });
 
         createFilterOptions();
+        sort();
     }
 }
 
@@ -234,19 +256,25 @@ function filterByName() {
 }
 
 
-document.getElementById("sort").addEventListener("change", function () {
-    sortData.direction = (this.checked) ? "up" : "down";
-
-    sort();
-})
-
-
 function sort() {
-    console.log(sortData.direction);
-    if (sortData.data = "name") {
+    sortLabel.className = (sortData.direction === "up") ?
+        "fa-solid fa-arrow-down-short-wide" :
+        "fa-solid fa-arrow-up-wide-short";
+
+    sessionStorage.setItem("sort", JSON.stringify(sortData));
+
+    if (sortData.data === "name") {
         (sortData.direction === "up") ?
-            data.sort((a, b) => a.name.common.localeCompare(b.name.common)) :
-            data.sort((b, a) => a.name.common.localeCompare(b.name.common));
+            data.sort((b, a) => a.name.common.localeCompare(b.name.common)) :
+            data.sort((a, b) => a.name.common.localeCompare(b.name.common));
+    } else if (sortData.data === "population") {
+        (sortData.direction === "up") ?
+            data.sort((a, b) => a.population - b.population) :
+            data.sort((b, a) => a.population - b.population);
+    } else if (sortData.data === "area") {
+        (sortData.direction === "up") ?
+            data.sort((a, b) => a.area - b.area) :
+            data.sort((b, a) => a.area - b.area);
     }
 
     sessionStorage.setItem("country-data", JSON.stringify(data));
@@ -277,6 +305,20 @@ function changeMode() {
 
 searchInput.addEventListener('input', () => {
     filterByName();
+});
+
+
+sortDirection.addEventListener("change", function () {
+    sortData.direction = (this.checked) ? "up" : "down";
+    sort();
+})
+
+
+sortDataInput.forEach((input) => {
+    input.addEventListener("change", function () {
+        sortData.data = this.value;
+        sort();
+    });
 });
 
 
