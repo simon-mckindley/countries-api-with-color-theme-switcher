@@ -24,7 +24,7 @@ if (mode) {
     changeMode();
 }
 
-const savedSort = JSON.parse(sessionStorage.getItem("sor"));
+const savedSort = JSON.parse(sessionStorage.getItem("sort"));
 if (savedSort) {
     sortData = savedSort;
 
