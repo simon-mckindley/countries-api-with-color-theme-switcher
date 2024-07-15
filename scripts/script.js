@@ -257,6 +257,7 @@ function filterByName() {
 
 
 function sort() {
+    searchInput.value = "";
     sortLabel.className = (sortData.direction === "up") ?
         "fa-solid fa-arrow-down-short-wide" :
         "fa-solid fa-arrow-up-wide-short";

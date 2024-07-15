@@ -133,6 +133,7 @@ header i {
 .sort-wrapper {
     display: flex;
     align-items: center;
+    color: var(--input-color);
 }
 
 .controls-inner input {
@@ -160,6 +161,7 @@ header i {
 }
 
 .sort-data input:checked+label {
+    color: var(--text-color);
     outline: var(--shadow-color) solid 3px;
     outline-offset: -4px;
 }
