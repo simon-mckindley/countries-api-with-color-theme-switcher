@@ -89,6 +89,7 @@ function createCountry(data) {
     flag.src = data.flags.svg;
     flag.width = "400";
     flag.alt = `${data.name.common} flag`;
+    flag.loading = "lazy";
 
     const dataWrapper = createCountryData(data);
 
