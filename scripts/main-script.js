@@ -1,4 +1,6 @@
-const modeInput = document.getElementById("mode");
+import { createCountryTile } from "./CreateElements.js";
+import { setMode, changeMode } from "./Utils.js";
+
 
 const filterToggleBtn = document.querySelector(".filter-input");
 const filterChevron = document.querySelector(".fa-chevron-up");
@@ -12,17 +14,15 @@ const searchInput = document.getElementById("search");
 
 const contentWrapper = document.querySelector(".content-wrapper");
 
+const modeInput = document.getElementById("mode");
+setMode(modeInput);
+
+let data;
 
 let regions = new Set();
 let currentRegion = "None";
 let sortData = { data: "name", direction: "down" };
 
-
-const mode = sessionStorage.getItem("mode");
-if (mode) {
-    modeInput.checked = (mode === "dark");
-    changeMode();
-}
 
 const savedSort = JSON.parse(sessionStorage.getItem("sort"));
 if (savedSort) {
@@ -63,90 +63,16 @@ async function assignData() {
     }
 
     if (data) {
-        console.log("DATA");
         sessionStorage.setItem("country-data", JSON.stringify(data));
         data.forEach((item) => {
             regions.add(item.region);
-            const country = createCountry(item);
+            const country = createCountryTile(item);
             contentWrapper.appendChild(country);
         });
 
         createFilterOptions();
         sort();
     }
-}
-
-
-function createCountry(data) {
-    const outer = document.createElement("a");
-    outer.className = "country-wrapper";
-    outer.href = `/detail.html?country=${data.cca3}`;
-    outer.setAttribute("data-region", data.region);
-    outer.setAttribute("data-name", data.name.common.toLowerCase());
-    outer.setAttribute("aria-hidden", false);
-
-    const flag = document.createElement("img");
-    flag.src = data.flags.svg;
-    flag.width = "400";
-    flag.alt = `${data.name.common} flag`;
-    flag.loading = "lazy";
-
-    const dataWrapper = createCountryData(data);
-
-    outer.append(flag, dataWrapper);
-    return outer;
-}
-
-
-function createCountryData(data) {
-    const dataWrapper = document.createElement("div");
-    dataWrapper.className = "country-data";
-
-    const title = document.createElement("div");
-    title.className = "country-title";
-    title.textContent = data.name.common;
-
-    const pop = document.createElement("div");
-    pop.textContent = "Population: ";
-    if (data.population) {
-        pop.appendChild(createDataSpan(insertCommas(data.population.toString())));
-    } else {
-        pop.appendChild(createDataSpan("0"));
-    }
-
-    const reg = document.createElement("div");
-    if (data.region) {
-        reg.textContent = "Region: ";
-        reg.appendChild(createDataSpan(data.region));
-    }
-
-    const area = document.createElement("div");
-    if (data.area) {
-        area.textContent = "Area: ";
-        const aSpan = createDataSpan(insertCommas(data.area.toString()));
-        const sup = document.createElement("sup");
-        sup.textContent = "2";
-        aSpan.append(" km", sup);
-        area.appendChild(aSpan);
-    }
-
-    const cap = document.createElement("div");
-    if (data.capital) {
-        cap.textContent = "Capital: ";
-        cap.appendChild(createDataSpan(data.capital));
-    }
-
-    dataWrapper.append(title, pop, reg, area, cap);
-
-    return dataWrapper;
-}
-
-
-function createDataSpan(data) {
-    const span = document.createElement("span");
-    span.className = "data";
-    span.textContent = data;
-    return span;
 }
 
 
@@ -182,18 +108,6 @@ function retrieveSavedFilter() {
     if (matchingFilterBtn) {
         filterByRegion(matchingFilterBtn);
     }
-}
-
-
-function insertCommas(numberStr) {
-    if (numberStr.includes(".")) {
-        let parts = numberStr.split('.');
-        let integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
-        return integerPart + decimalPart;
-    }
-
-    return numberStr.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 
@@ -282,26 +196,11 @@ function sort() {
     sessionStorage.setItem("country-data", JSON.stringify(data));
     contentWrapper.innerHTML = "";
     data.forEach((item) => {
-        const country = createCountry(item);
+        const country = createCountryTile(item);
         contentWrapper.appendChild(country);
     });
 
     retrieveSavedFilter();
-}
-
-
-function changeMode() {
-    const body = document.querySelector("body");
-    const icon = document.querySelector(".fa-moon");
-    if (modeInput.checked) {
-        body.className = "home dark";
-        icon.className = "fa-solid fa-moon"
-        sessionStorage.setItem("mode", "dark");
-    } else {
-        body.className = "home light";
-        icon.className = "fa-regular fa-moon";
-        sessionStorage.setItem("mode", "light");
-    }
 }
 
 
@@ -345,7 +244,7 @@ filterToggleBtn.addEventListener("click", () => {
 
 
 modeInput.addEventListener("change", () => {
-    changeMode();
+    changeMode(modeInput);
 });
 
 

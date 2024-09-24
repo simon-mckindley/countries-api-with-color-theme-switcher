@@ -1,12 +1,9 @@
+import { insertCommas, setMode, changeMode } from "./Utils.js";
+
 const modeInput = document.getElementById("mode");
+setMode(modeInput);
 
 let areas;
-
-const mode = sessionStorage.getItem("mode");
-if (mode) {
-    modeInput.checked = (mode === "dark");
-    changeMode();
-}
 
 const data = JSON.parse(sessionStorage.getItem("country-data"));
 if (data) {
@@ -33,71 +30,68 @@ function assignData(params) {
     const country = data.find((el) => el.cca3 === params.country);
     areas = data.map(country => country.area);
 
-    if (country) {
-        document.querySelector("title").textContent = country.name.common;
-
-        if (country.latlng && country.area) {
-            showMap(country.latlng[0], country.latlng[1], country.area);
-        }
-
-        document.getElementById("flag").src = country.flags.svg;
-        document.getElementById("flag").alt = `${country.name.common} flag`;
-
-        document.getElementById("detail-title").textContent = country.name.common;
-
-        const nnKeys = Object.keys(country.name.nativeName);
-        document.getElementById("native").textContent = country.name.nativeName[nnKeys[0]].common;
-
-        if (country.population) {
-            document.getElementById("population").textContent = insertCommas(country.population.toString());
-        }
-
-        document.getElementById("region").textContent = country.region;
-
-        if (country.subregion) {
-            document.getElementById("sub-region").textContent = country.subregion;
-        }
-
-        if (country.capital) {
-            document.getElementById("capital").textContent = country.capital;
-        }
-
-        if (country.area) {
-            const areaData = insertCommas(country.area.toString());
-            const sup = document.createElement("sup");
-            sup.textContent = "2";
-            const area = document.getElementById("area");
-            area.textContent = "";
-            area.append(areaData, " km", sup);
-        }
-
-        document.getElementById("domain").textContent = country.tld.join(" ");
-
-        if (country.currencies) {
-            document.getElementById("currencies").textContent = getNameValuesList(country.currencies).join(', ');
-        }
-
-        if (country.languages) {
-            document.getElementById("languages").textContent = getValuesList(country.languages).join(', ');
-        }
-
-        if (country.borders) {
-            createBorderLinks(country.borders);
-        } else {
-            const span = document.createElement("span");
-            span.className = "data border-label";
-            span.textContent = "None";
-            document.querySelector(".border-link-wrapper").appendChild(span);
-        }
-    } else {
+    if (!country) {
         console.error("Country not found");
+        return;
+    }
+
+    document.querySelector("title").textContent = country.name.common;
+
+    if (country.latlng && country.area) {
+        showMap(country.latlng[0], country.latlng[1], country.area);
+    }
+
+    document.getElementById("flag").src = country.flags.svg;
+    document.getElementById("flag").alt = `${country.name.common} flag`;
+
+    document.getElementById("detail-title").textContent = country.name.common;
+
+    const nnKeys = Object.keys(country.name.nativeName);
+    document.getElementById("native").textContent = country.name.nativeName[nnKeys[0]].common;
+
+    if (country.population) {
+        document.getElementById("population").textContent = insertCommas(country.population.toString());
+    }
+
+    document.getElementById("region").textContent = country.region;
+
+    if (country.subregion) {
+        document.getElementById("sub-region").textContent = country.subregion;
+    }
+
+    if (country.capital) {
+        document.getElementById("capital").textContent = country.capital;
+    }
+
+    if (country.area) {
+        const areaData = insertCommas(country.area.toString());
+        const sup = document.createElement("sup");
+        sup.textContent = "2";
+        const area = document.getElementById("area");
+        area.textContent = "";
+        area.append(areaData, " km", sup);
+    }
+
+    document.getElementById("domain").textContent = country.tld.join(" ");
+
+    if (country.currencies) {
+        document.getElementById("currencies").textContent = getNameValuesList(country.currencies).join(', ');
+    }
+
+    if (country.languages) {
+        document.getElementById("languages").textContent = getValuesList(country.languages).join(', ');
+    }
+
+    if (country.borders) {
+        createBorderLinks(country.borders);
+    } else {
+        const span = document.createElement("span");
+        span.className = "data border-label";
+        span.textContent = "None";
+        document.querySelector(".border-link-wrapper").appendChild(span);
     }
 }
 
-
-function createList(items, index) {
-    return items.map(item => item[index]);
-}
 
 function getNameValuesList(obj) {
     return Object.keys(obj)
@@ -105,20 +99,9 @@ function getNameValuesList(obj) {
         .filter(name => name !== undefined); // Filter out undefined values
 }
 
+
 function getValuesList(obj) {
     return Object.keys(obj).map(key => obj[key]);
-}
-
-
-function insertCommas(numberStr) {
-    if (numberStr.includes(".")) {
-        let parts = numberStr.split('.');
-        let integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
-        return integerPart + decimalPart;
-    }
-
-    return numberStr.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 
@@ -137,23 +120,10 @@ function createBorderLinks(borderCodes) {
 }
 
 
-function changeMode() {
-    const body = document.querySelector("body");
-    const icon = document.querySelector(".fa-moon");
-    if (modeInput.checked) {
-        body.className = "detail dark";
-        icon.className = "fa-solid fa-moon"
-        sessionStorage.setItem("mode", "dark");
-    } else {
-        body.className = "detail light";
-        icon.className = "fa-regular fa-moon";
-        sessionStorage.setItem("mode", "light");
-    }
-}
-
 modeInput.addEventListener("change", () => {
-    changeMode();
+    changeMode(modeInput);
 });
+
 
 // Function to calculate zoom level
 function calculateZoomLevel(area) {
@@ -161,7 +131,7 @@ function calculateZoomLevel(area) {
     const minZoom = 4;
     const maxZoom = 13;
 
-    // Find the min and max area in your dataset
+    // Find the min and max area in the dataset
     const minArea = Math.min(...areas);
     const maxArea = Math.max(...areas);
     // Normalize the area using logarithmic scaling
