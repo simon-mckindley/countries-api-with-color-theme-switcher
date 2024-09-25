@@ -5,8 +5,8 @@ setMode(modeInput);
 
 let areas;
 
-const data = JSON.parse(sessionStorage.getItem("country-data"));
-if (data) {
+const countries = JSON.parse(sessionStorage.getItem("country-data"));
+if (countries) {
     console.log("data");
 } else {
     console.log("NOT LOaDED");
@@ -27,8 +27,9 @@ function getQueryParams() {
 
 
 function assignData(params) {
-    const country = data.find((el) => el.cca3 === params.country);
-    areas = data.map(country => country.area);
+    const country = countries.find((el) => el.cca3 === params.country);
+    console.log(country);
+    areas = countries.map(country => country.area);
 
     if (!country) {
         console.error("Country not found");
@@ -109,7 +110,7 @@ function createBorderLinks(borderCodes) {
     const wrapper = document.querySelector(".border-link-wrapper");
 
     borderCodes.forEach((code) => {
-        const country = data.find((el) => el.cca3 === code);
+        const country = countries.find((el) => el.cca3 === code);
         const link = document.createElement("a");
         link.textContent = country.name.common;
         link.className = "border-link"

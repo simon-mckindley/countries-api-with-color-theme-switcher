@@ -1,5 +1,6 @@
 import { createCountryTile } from "./CreateElements.js";
 import { setMode, changeMode } from "./Utils.js";
+import Api from "./Api.js";
 
 
 const filterToggleBtn = document.querySelector(".filter-input");
@@ -17,7 +18,7 @@ const contentWrapper = document.querySelector(".content-wrapper");
 const modeInput = document.getElementById("mode");
 setMode(modeInput);
 
-let data;
+let countries;
 
 let regions = new Set();
 let currentRegion = "None";
@@ -40,31 +41,16 @@ if (savedSort) {
 }
 
 
-async function fetchJsonData() {
-    try {
-        // const response = await fetch('data.json');
-        const response = await fetch('https://restcountries.com/v3.1/all');
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        console.log(data);
-        return data;
-    } catch (error) {
-        console.error('Failed to fetch the JSON data:', error);
-    }
-}
-
 async function assignData() {
-    data = JSON.parse(sessionStorage.getItem("country-data"));
+    countries = JSON.parse(sessionStorage.getItem("country-data"));
 
-    if (!data) {
-        data = await fetchJsonData();
+    if (!countries) {
+        countries = await Api.getCountryData();
     }
 
-    if (data) {
-        sessionStorage.setItem("country-data", JSON.stringify(data));
-        data.forEach((item) => {
+    if (countries) {
+        sessionStorage.setItem("country-data", JSON.stringify(countries));
+        countries.forEach((item) => {
             regions.add(item.region);
             const country = createCountryTile(item);
             contentWrapper.appendChild(country);
@@ -181,21 +167,21 @@ function sort() {
 
     if (sortData.data === "name") {
         (sortData.direction === "up") ?
-            data.sort((b, a) => a.name.common.localeCompare(b.name.common)) :
-            data.sort((a, b) => a.name.common.localeCompare(b.name.common));
+            countries.sort((b, a) => a.name.common.localeCompare(b.name.common)) :
+            countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
     } else if (sortData.data === "population") {
         (sortData.direction === "up") ?
-            data.sort((a, b) => a.population - b.population) :
-            data.sort((b, a) => a.population - b.population);
+            countries.sort((a, b) => a.population - b.population) :
+            countries.sort((b, a) => a.population - b.population);
     } else if (sortData.data === "area") {
         (sortData.direction === "up") ?
-            data.sort((a, b) => a.area - b.area) :
-            data.sort((b, a) => a.area - b.area);
+            countries.sort((a, b) => a.area - b.area) :
+            countries.sort((b, a) => a.area - b.area);
     }
 
-    sessionStorage.setItem("country-data", JSON.stringify(data));
+    sessionStorage.setItem("country-data", JSON.stringify(countries));
     contentWrapper.innerHTML = "";
-    data.forEach((item) => {
+    countries.forEach((item) => {
         const country = createCountryTile(item);
         contentWrapper.appendChild(country);
     });
