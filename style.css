@@ -337,7 +337,7 @@ header i {
 }
 
 #detail-title {
-    grid-area: 1 / 1 / 2 / 3;
+    grid-column: span 2;
     font-size: 2.5em;
     font-weight: var(--bold-weight);
     margin-bottom: 2rem;
@@ -347,11 +347,19 @@ header i {
     margin-bottom: 0.25rem;
 }
 
+.coa-wrapper {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
 .border-countries {
-    grid-area: 3 / 1 / 4 / 3;
+    grid-column: span 2;
     display: flex;
     text-wrap: nowrap;
-    margin-top: 4rem;
+    margin-top: 3rem;
 }
 
 .border-label {
@@ -385,14 +393,18 @@ header i {
 
     .detail-data-wrapper {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
 
     #detail-title {
         grid-area: unset;
+        margin-bottom: unset;
     }
 
-    .detail-data-content {
-        margin-bottom: 1.5rem;
+    .coa-wrapper {
+        grid-column: unset;
+        align-items: start;
+        margin-top: unset;
     }
 
     .border-countries {

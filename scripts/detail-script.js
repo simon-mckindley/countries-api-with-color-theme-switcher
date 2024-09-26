@@ -73,6 +73,8 @@ function assignData(params) {
         area.append(areaData, " km", sup);
     }
 
+    document.getElementById("tel-code")
+
     document.getElementById("domain").textContent = country.tld.join(" ");
 
     if (country.currencies) {
@@ -87,6 +89,15 @@ function assignData(params) {
         document.getElementById("isMember").style.display = "inline" :
         document.getElementById("notMember").style.display = "inline";
 
+    if (country.coatOfArms.svg) {
+        document.getElementById("coat-of-arms").src = country.coatOfArms.svg;
+    } else {
+        const el = document.createElement("p");
+        el.textContent = "None";
+        el.className = "data";
+        document.getElementById("coat-of-arms").replaceWith(el);
+    }
+
     if (country.borders) {
         createBorderLinks(country.borders);
     } else {
@@ -95,6 +106,12 @@ function assignData(params) {
         span.textContent = "None";
         document.querySelector(".border-link-wrapper").appendChild(span);
     }
+}
+
+
+function getTelCodes(obj) {
+    const pre = obj.root;
+    
 }
 
 
