@@ -71,3 +71,15 @@ function createDataSpan(data) {
     span.textContent = data;
     return span;
 }
+
+
+// Template
+//  <a href = "newpage.html?country=AFG" class="country-wrapper" >
+//     <img width="400" src="https://flagcdn.com/af.svg" alt="">
+//         <div class="country-data">
+//             <div class="country-title">Afghanistan</div>
+//             <div>Population: <span class="data">40218234</span></div>
+//             <div>Region: <span class="data">Asia</span></div>
+//             <div>Capital: <span class="data">Kabul</span></div>
+//         </div>
+// </a>

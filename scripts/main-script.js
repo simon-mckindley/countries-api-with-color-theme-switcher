@@ -66,14 +66,21 @@ function createFilterOptions() {
     const regArray = Array.from(regions);
     regArray.sort((a, b) => a.localeCompare(b));
 
+    document.getElementById("None").addEventListener("click", (e) => {
+        filterByRegion(e.currentTarget);
+    });
+
     regArray.forEach((region) => {
         const option = document.createElement("button");
         option.type = "button";
         option.id = region;
         option.className = "filter-btn";
         option.role = "option";
-        option.setAttribute("onclick", "filterByRegion(this)");
         option.textContent = region;
+
+        option.addEventListener("click", (e) => {
+            filterByRegion(e.currentTarget);
+        });
 
         filterOptions.appendChild(option);
     });

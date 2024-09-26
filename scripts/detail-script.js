@@ -48,7 +48,7 @@ function assignData(params) {
     document.getElementById("detail-title").textContent = country.name.common;
 
     const nnKeys = Object.keys(country.name.nativeName);
-    document.getElementById("native").textContent = country.name.nativeName[nnKeys[0]].common;
+    document.getElementById("native").textContent = country.name.nativeName[nnKeys[0]].official;
 
     if (country.population) {
         document.getElementById("population").textContent = insertCommas(country.population.toString());
@@ -82,6 +82,10 @@ function assignData(params) {
     if (country.languages) {
         document.getElementById("languages").textContent = getValuesList(country.languages).join(', ');
     }
+
+    country.unMember ?
+        document.getElementById("isMember").style.display = "inline" :
+        document.getElementById("notMember").style.display = "inline";
 
     if (country.borders) {
         createBorderLinks(country.borders);
