@@ -6,10 +6,8 @@ setMode(modeInput);
 let areas;
 
 const countries = JSON.parse(sessionStorage.getItem("country-data"));
-if (countries) {
-    console.log("data");
-} else {
-    console.log("NOT LOaDED");
+if (!countries) {
+    console.log("NOT LOADED");
     window.location.replace("/");
 }
 
@@ -28,13 +26,12 @@ function getQueryParams() {
 
 function assignData(params) {
     const country = countries.find((el) => el.cca3 === params.country);
+    if (!country) {
+        window.location.replace("/");
+    }
+
     console.log(country);
     areas = countries.map(country => country.area);
-
-    if (!country) {
-        console.error("Country not found");
-        return;
-    }
 
     document.querySelector("title").textContent = country.name.common;
 
@@ -47,8 +44,10 @@ function assignData(params) {
 
     document.getElementById("detail-title").textContent = country.name.common;
 
-    const nnKeys = Object.keys(country.name.nativeName);
-    document.getElementById("native").textContent = country.name.nativeName[nnKeys[0]].official;
+    if (country.name.nativeName) {
+        const nnKeys = Object.keys(country.name.nativeName);
+        document.getElementById("native").textContent = country.name.nativeName[nnKeys[0]].official;
+    }
 
     if (country.population) {
         document.getElementById("population").textContent = insertCommas(country.population.toString());
@@ -73,7 +72,9 @@ function assignData(params) {
         area.append(areaData, " km", sup);
     }
 
-    document.getElementById("tel-code")
+    if (country.idd.root) {
+        document.getElementById("tel-code").textContent = getTelCodes(country.idd).join(' ');
+    }
 
     document.getElementById("domain").textContent = country.tld.join(" ");
 
@@ -111,7 +112,17 @@ function assignData(params) {
 
 function getTelCodes(obj) {
     const pre = obj.root;
-    
+    let codes = [];
+
+    for (let i = 0; i < obj.suffixes.length; i++) {
+        if (i > 5) {
+            codes.push("...");
+            return codes;
+        }
+        codes.push(`${pre}${obj.suffixes[i]}`);
+    }
+
+    return codes;
 }
 
 
