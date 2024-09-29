@@ -53,7 +53,9 @@ function assignData(params) {
         document.getElementById("population").textContent = insertCommas(country.population.toString());
     }
 
-    document.getElementById("region").textContent = country.region;
+    if (country.region) {
+        document.getElementById("region").textContent = country.region;
+    }
 
     if (country.subregion) {
         document.getElementById("sub-region").textContent = country.subregion;
@@ -76,7 +78,9 @@ function assignData(params) {
         document.getElementById("tel-code").textContent = getTelCodes(country.idd).join(' ');
     }
 
-    document.getElementById("domain").textContent = country.tld.join(" ");
+    if (country.tld) {
+        document.getElementById("domain").textContent = country.tld.join(" ");
+    }
 
     if (country.currencies) {
         document.getElementById("currencies").textContent = getNameValuesList(country.currencies).join(', ');
