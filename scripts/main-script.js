@@ -174,8 +174,8 @@ function sort() {
 
     if (sortData.data === "name") {
         (sortData.direction === "up") ?
-            countries.sort((b, a) => a.name.common.localeCompare(b.name.common)) :
-            countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
+            countries.sort((b, a) => a.name.localeCompare(b.name)) :
+            countries.sort((a, b) => a.name.localeCompare(b.name));
     } else if (sortData.data === "population") {
         (sortData.direction === "up") ?
             countries.sort((a, b) => a.population - b.population) :

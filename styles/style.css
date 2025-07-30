@@ -283,16 +283,25 @@ header i {
     row-gap: 0.25rem;
     font-weight: var(--mid-weight);
     padding: 1rem;
+    margin-block: 0;
     min-height: 10rem;
+
+    >div {
+        display: flex;
+        column-gap: 1ch;
+        align-items: baseline;
+    }
 }
 
 .country-title {
     font-size: 1.2rem;
     font-weight: var(--bold-weight);
+    margin-block: 0;
 }
 
 .data {
     font-weight: var(--light-weight);
+    margin-inline: 0;
 }
 
 /**** Details ****/

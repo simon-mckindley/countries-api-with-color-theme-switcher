@@ -25,28 +25,28 @@ function getQueryParams() {
 
 
 function assignData(params) {
-    const country = countries.find((el) => el.cca3 === params.country);
+    const country = countries.find((el) => el.alpha3Code === params.country);
     if (!country) {
         window.location.replace("/");
     }
 
-    console.log(country);
+    // console.log(country);
     areas = countries.map(country => country.area);
 
-    document.querySelector("title").textContent = country.name.common;
+    document.querySelector("title").textContent = country.name;
 
-    if (country.latlng && country.area) {
-        showMap(country.latlng[0], country.latlng[1], country.area);
-    }
+    // if (country.latlng && country.area) {
+    //     showMap(country.latlng[0], country.latlng[1], country.area);
+    // }
 
     document.getElementById("flag").src = country.flags.svg;
     document.getElementById("flag").alt = `${country.name.common} flag`;
 
-    document.getElementById("detail-title").textContent = country.name.common;
+    document.getElementById("detail-title").textContent = country.name;
 
-    if (country.name.nativeName) {
-        const nnKeys = Object.keys(country.name.nativeName);
-        document.getElementById("native").textContent = country.name.nativeName[nnKeys[0]].official;
+    if (country.nativeName) {
+        // const nnKeys = Object.keys(country.nativeName);
+        document.getElementById("native").textContent = country.nativeName;
     }
 
     if (country.population) {
@@ -74,12 +74,12 @@ function assignData(params) {
         area.append(areaData, " km", sup);
     }
 
-    if (country.idd.root) {
-        document.getElementById("tel-code").textContent = getTelCodes(country.idd).join(' ');
+    if (country.callingCodes) {
+        document.getElementById("tel-code").textContent = country.callingCodes.join(', ');
     }
 
-    if (country.tld) {
-        document.getElementById("domain").textContent = country.tld.join(" ");
+    if (country.topLevelDomain) {
+        document.getElementById("domain").textContent = country.topLevelDomain.join(" ");
     }
 
     if (country.currencies) {
@@ -87,21 +87,21 @@ function assignData(params) {
     }
 
     if (country.languages) {
-        document.getElementById("languages").textContent = getValuesList(country.languages).join(', ');
+        document.getElementById("languages").textContent = getNameValuesList(country.languages).join(', ');
     }
 
-    country.unMember ?
-        document.getElementById("isMember").style.display = "inline" :
-        document.getElementById("notMember").style.display = "inline";
+    // country.unMember ?
+    //     document.getElementById("isMember").style.display = "inline" :
+    //     document.getElementById("notMember").style.display = "inline";
 
-    if (country.coatOfArms.svg) {
-        document.getElementById("coat-of-arms").src = country.coatOfArms.svg;
-    } else {
-        const el = document.createElement("p");
-        el.textContent = "None";
-        el.className = "data";
-        document.getElementById("coat-of-arms").replaceWith(el);
-    }
+    // if (country.coatOfArms.svg) {
+    //     document.getElementById("coat-of-arms").src = country.coatOfArms.svg;
+    // } else {
+    //     const el = document.createElement("p");
+    //     el.textContent = "None";
+    //     el.className = "data";
+    //     document.getElementById("coat-of-arms").replaceWith(el);
+    // }
 
     if (country.borders) {
         createBorderLinks(country.borders);
@@ -146,9 +146,9 @@ function createBorderLinks(borderCodes) {
     const wrapper = document.querySelector(".border-link-wrapper");
 
     borderCodes.forEach((code) => {
-        const country = countries.find((el) => el.cca3 === code);
+        const country = countries.find((el) => el.alpha3Code === code);
         const link = document.createElement("a");
-        link.textContent = country.name.common;
+        link.textContent = country.name;
         link.className = "border-link"
         link.href = `/detail.html?country=${code}`;
 

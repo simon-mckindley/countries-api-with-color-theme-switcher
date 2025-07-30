@@ -3,15 +3,15 @@ import { insertCommas } from "./Utils.js";
 export function createCountryTile(data) {
     const outer = document.createElement("a");
     outer.className = "country-wrapper";
-    outer.href = `/detail.html?country=${data.cca3}`;
+    outer.href = `/detail.html?country=${data.alpha3Code}`;
     outer.setAttribute("data-region", data.region);
-    outer.setAttribute("data-name", data.name.common.toLowerCase());
+    outer.setAttribute("data-name", data.name.toLowerCase());
     outer.setAttribute("aria-hidden", false);
 
     const flag = document.createElement("img");
     flag.src = data.flags.svg;
     flag.width = "400";
-    flag.alt = `${data.name.common} flag`;
+    flag.alt = `${data.name} flag`;
     flag.loading = "lazy";
 
     const dataWrapper = createCountryData(data);
@@ -22,31 +22,31 @@ export function createCountryTile(data) {
 
 
 function createCountryData(data) {
-    const dataWrapper = document.createElement("div");
+    const dataWrapper = document.createElement("dl");
     dataWrapper.className = "country-data";
 
-    const title = document.createElement("div");
+    const title = document.createElement("h2");
     title.className = "country-title";
-    title.textContent = data.name.common;
+    title.textContent = data.name;
 
     const pop = document.createElement("div");
-    pop.textContent = "Population: ";
+    pop.appendChild(createDataTitle("Population: "));
     if (data.population) {
-        pop.appendChild(createDataSpan(insertCommas(data.population.toString())));
+        pop.appendChild(createDataDescription(insertCommas(data.population.toString())));
     } else {
-        pop.appendChild(createDataSpan("0"));
+        pop.appendChild(createDataDescription("0"));
     }
 
     const reg = document.createElement("div");
     if (data.region) {
-        reg.textContent = "Region: ";
-        reg.appendChild(createDataSpan(data.region));
+        reg.appendChild(createDataTitle("Region: "));
+        reg.appendChild(createDataDescription(data.region));
     }
 
     const area = document.createElement("div");
     if (data.area) {
-        area.textContent = "Area: ";
-        const aSpan = createDataSpan(insertCommas(data.area.toString()));
+        area.appendChild(createDataTitle("Area: "));
+        const aSpan = createDataDescription(insertCommas(data.area.toString()));
         const sup = document.createElement("sup");
         sup.textContent = "2";
         aSpan.append(" km", sup);
@@ -55,8 +55,8 @@ function createCountryData(data) {
 
     const cap = document.createElement("div");
     if (data.capital) {
-        cap.textContent = "Capital: ";
-        cap.appendChild(createDataSpan(data.capital));
+        cap.appendChild(createDataTitle("Capital: "));
+        cap.appendChild(createDataDescription(data.capital));
     }
 
     dataWrapper.append(title, pop, reg, area, cap);
@@ -64,12 +64,18 @@ function createCountryData(data) {
     return dataWrapper;
 }
 
+function createDataTitle(data) {
+    const dt = document.createElement("dt");
+    dt.className = "data-title";
+    dt.textContent = data;
+    return dt;
+}
 
-function createDataSpan(data) {
-    const span = document.createElement("span");
-    span.className = "data";
-    span.textContent = data;
-    return span;
+function createDataDescription(data) {
+    const dd = document.createElement("dd");
+    dd.className = "data";
+    dd.textContent = data;
+    return dd;
 }
 
 
