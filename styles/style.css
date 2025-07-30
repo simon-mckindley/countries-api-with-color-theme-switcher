@@ -249,7 +249,8 @@ header i {
 }
 
 .country-wrapper {
-    display: block;
+    display: grid;
+    align-content: space-between;
     font: inherit;
     color: var(--text-color);
     text-decoration: none;
